@@ -1,13 +1,105 @@
 ---
 import BentoItem from "./BentoItem.astro";
+
+const { currentLocale } = Astro;
 ---
 
 <section
-  class="w-full max-w-[1400px]
-grid grid-cols-10 auto-rows-[35rem] gap-4 mx-auto p-20"
+  class={`
+    w-full max-w-[1400px]
+    grid lg:grid-cols-10 auto-rows-[30rem] gap-4
+    mx-auto p-6 md:p-12 lg:p-20
+  `}
 >
-  <BentoItem title="ANDORRA: EL CÉNIT DE LOS PREMIOS ESLAND" />
-  <BentoItem title="LA ALFOMBRA BLANCA" subtitle="16 de febrero de 2024" />
-  <BentoItem title="LA GALA" subtitle="17 de febrero de 2024" />
-  <BentoItem title="DISFRUTA DEL REDDIT DE LA COMUNIDAD" />
+  <BentoItem
+    class="col-span-10 lg:col-span-4"
+    title="ANDORRA: EL CÉNIT DE LOS PREMIOS ESLAND"
+  >
+    <div
+      slot="image"
+      class="background transition-scale absolute bottom-0 left-0 top-0
+    -z-10 h-full w-full bg-blue-950
+    bg-cover bg-center bg-no-repeat opacity-90 bg-blend-luminosity duration-1000 ease-in-out group-hover:scale-110"
+      style="background-image: url('/mountain.webp');"
+    >
+    </div>
+
+    <p slot="content" class="max-w-xl text-base md:text-lg">sdfsadfas</p>
+  </BentoItem>
+  <BentoItem
+    class="col-span-10 lg:col-span-6"
+    title="titulo 2"
+    subtitle="asdfa"
+  >
+    <div
+      slot="image"
+      class="background transition-scale absolute bottom-0 left-0 top-0
+    -z-10 h-full w-full bg-blue-800
+    bg-cover bg-center bg-no-repeat opacity-90 bg-blend-luminosity duration-1000 ease-in-out group-hover:scale-110 background-image"
+      style="background-image: url('/pistas.webp');"
+    >
+    </div>
+    <p slot="content" class="max-w-xl text-base md:text-lg">sdfsadfas</p>
+  </BentoItem>
+  <BentoItem
+    class="col-span-10 lg:col-span-6"
+    title="sfsaf"
+    subtitle="{i18n.BENTO_SUBTITLE_3}"
+  >
+    <div
+      slot="image"
+      class="background transition-scale absolute bottom-0 left-0 top-0
+        -z-10 h-full w-full bg-blue-900
+        bg-cover bg-center bg-no-repeat opacity-90 bg-blend-luminosity duration-1000 ease-in-out group-hover:scale-110"
+      style="background-image: url('/grefg.webp');"
+    >
+    </div>
+    <p slot="content" class="max-w-xl text-base md:text-lg">sdfsadfas</p>
+  </BentoItem>
+  <BentoItem class="col-span-10 lg:col-span-4" title="{i18n.BENTO_TITLE_4}>">
+    <div
+      slot="image"
+      class="background transition-scale absolute bottom-0 left-0 top-0
+        -z-10 h-full w-full bg-blue-950
+        bg-cover bg-center bg-no-repeat opacity-90 bg-blend-luminosity duration-1000 ease-in-out group-hover:scale-110"
+      style="background-image: url('/laptop.webp');"
+    >
+    </div>
+    <p slot="content" class="max-w-xl text-base md:text-lg">sdfsadfas</p>
+  </BentoItem>
 </section>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const backgrounds = document.querySelectorAll(
+      ".background"
+    ) as NodeListOf<HTMLElement>;
+
+    if (window.IntersectionObserver == null) {
+      backgrounds.forEach((bkg) => {
+        bkg.style.backgroundImage = "url('" + bkg.dataset.src + "')";
+      });
+      return;
+    }
+
+    function handleIntersection(entries: IntersectionObserverEntry[]) {
+      entries.map((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement;
+          const { style, dataset } = target;
+          // Item has crossed our observation
+          // threshold - load src from data-src
+          style.backgroundImage = "url('" + dataset.src + "')";
+          // Job done for this item - no need to watch it!
+          observer.unobserve(entry.target);
+        }
+      });
+    }
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      rootMargin: "100px",
+    });
+
+    backgrounds.forEach((bkg) => observer.observe(bkg));
+  });
+</script>
