@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Bento from "../components/Bento.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Intro from "../components/Intro.astro";
+import Prefooter from "../components/Prefooter.astro";
+import Video from "../components/Video.astro";
+
+import { getI18N } from "../i18n";
+const { currentLocale = "es" } = Astro;
+const i18 = getI18N({ currentlocale: "es" });
+---
+
+<Layout title="Premios Esland" description="Descubre la innovacion">
+  <Video />
+  <Intro />
+  <Bento />
+  <Prefooter />
+  <main>
+    <intro></intro>
+    <bento></bento>
+  </main>
+
+  <footer></footer>
+</Layout>
+<style></style>
